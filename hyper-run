@@ -22,6 +22,17 @@ if (!is_dir($dir)) {
     exit(1);
 }
 
-require __DIR__ . '/autoload.php';
+if (is_file(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+} elseif (is_file(__DIR__ . '/../../../autoload.php')) {
+    require __DIR__ . '/../../../autoload.php';
+} else {
+    fwrite(STDERR,
+        "You need to set up the project dependencies using the following commands:\n" .
+        "curl -s http://getcomposer.org/installer | php\n" .
+        "php composer.phar install\n"
+    );
+}
+
 $ps = new mpyw\HyperBuiltinServer\MasterProcess($dir);
 $ps->listen();
