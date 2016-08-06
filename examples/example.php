@@ -1,7 +1,5 @@
 <?php
 
-namespace mpyw\HyperBuiltinServer;
-
 declare(ticks=1);
 set_time_limit(0);
 
@@ -15,5 +13,5 @@ if (DIRECTORY_SEPARATOR !== '/') {
 }
 
 require __DIR__ . '/../vendor/autoload.php';
-$ps = new MasterProcess(__DIR__);
+$ps = new mpyw\HyperBuiltinServer\MasterProcess(__DIR__);
 $ps->listen();
