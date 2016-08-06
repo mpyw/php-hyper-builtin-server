@@ -49,27 +49,6 @@ class ProxyProcess
         }
     }
 
-    public function __destruct()
-    {
-        if (empty($this->port)) {
-            return;
-        }
-        $search = "php -S localhost:$this->port";
-        $outputs = $this->execCommand("ps | grep '$search'");
-        foreach ($outputs as $item) {
-            if (
-                strpos($item, 'grep') === false &&
-                strpos($item, 'sh') === false &&
-                strpos($item, $search) !== false
-            ) {
-                $pid = (int)$item;
-                $this->execCommand("kill $pid 2>/dev/null");
-                $this->info("Killed localhost:$this->port");
-                return;
-            }
-        }
-    }
-
     private function getSocketServer($use_ssl)
     {
         $context = stream_context_create(
