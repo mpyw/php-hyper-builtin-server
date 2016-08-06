@@ -82,6 +82,7 @@ class ProxyProcess
     {
         $lines = [];
         $length = null;
+        $body = '';
         while (true) {
             $line = @fgets($client);
             if ($line === false) {
@@ -95,7 +96,11 @@ class ProxyProcess
                 break;
             }
         }
-        $body = $length !== null ? fread($client, $length) : '';
+        if ($length !== null) {
+            while (strlen($body) < $length) {
+                $body .= fread($client, $length);
+            }
+        }
         fwrite($server, implode($lines) . $body);
         fwrite($client, stream_get_contents($server));
     }
