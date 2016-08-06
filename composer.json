@@ -1,0 +1,57 @@
+{
+    "name": "mpyw/HyperBuiltinServer",
+    "description": "Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL encryption",
+    "type": "project",
+    "license": "MIT",
+    "keywords": [
+        "built-in",
+        "builtin",
+        "reverse",
+        "proxy",
+        "server",
+        "TLS",
+        "SSL",
+        "multiprocess",
+        "multiprocessing"
+    ],
+    "authors": [
+        {
+            "name": "mpyw",
+            "email": "ryosuke_i_628@yahoo.co.jp"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "mpyw\\HyperBuiltinServer\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "ext-posix": "*",
+        "ext-pcntl": "*",
+        "monolog/monolog": "^1.21",
+        "psr/log": "^1.0"
+    },
+    "require-dev": {
+        "php": ">=7.0.0",
+        "lib-curl": ">=7.2.0",
+        "codeception/aspect-mock": "^2.0",
+        "codeception/codeception": "^2.2",
+        "codeception/specify": "*",
+        "codeception/verify": "*",
+        "satooshi/php-coveralls": "^1.0",
+        "mpyw/privator": "^2.0"
+    },
+    "scripts": {
+        "test": [
+            "php vendor/bin/codecept run unit --coverage --coverage-xml"
+        ]
+    },
+    "archive": {
+        "exclude": [
+            "*",
+            ".*",
+            "!/src/*"
+        ]
+    }
+}
