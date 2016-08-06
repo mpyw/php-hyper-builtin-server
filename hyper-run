@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+declare(ticks=1);
+set_time_limit(0);
+
+if (PHP_SAPI !== 'cli') {
+    header('Content-Type: text/plain; charset=UTF-8', true, 400);
+    exit("This script only works on php-cli.\n");
+}
+if (DIRECTORY_SEPARATOR !== '/') {
+    fwrite(STDERR, "Windows is not supported.\n");
+    exit(1);
+}
+if (!isset($_SERVER['argv'][1])) {
+    fwrite(STDERR, "Usage: {$_SERVER['argv'][0]} <DocumentRoot>\n");
+    exit(1);
+}
+$dir = $_SERVER['argv'][1];
+if (!is_dir($dir)) {
+    fwrite(STDERR, "No such directory: $dir\n");
+    exit(1);
+}
+
+require __DIR__ . '/autoload.php';
+$ps = new mpyw\HyperBuiltinServer\MasterProcess($dir);
+$ps->listen();
