@@ -102,6 +102,6 @@ class ProxyProcess
             }
         }
         fwrite($server, implode($lines) . $body);
-        fwrite($client, stream_get_contents($server));
+        stream_copy_to_stream($server, $client);
     }
 }
