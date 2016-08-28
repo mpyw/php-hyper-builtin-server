@@ -37,5 +37,8 @@ if (is_file(__DIR__ . '/autoload.php')) {
     exit(1);
 }
 
-$ps = new mpyw\HyperBuiltinServer\MasterProcess($dir);
-$ps->listen();
+$loop = React\EventLoop\Factory::create();
+$master = new mpyw\HyperBuiltinServer\Master($loop, __DIR__);
+$master->addListener('127.0.0.1', 8080, false);
+$master->addListener('127.0.0.1', 8081, true);
+$loop->run();

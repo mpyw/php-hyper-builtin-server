@@ -27,10 +27,8 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "ext-posix": "*",
-        "ext-pcntl": "*",
-        "monolog/monolog": "^1.21",
-        "psr/log": "^1.0"
+        "react/socket": "^0.4.3",
+        "symfony/process": "^3.1"
     },
     "archive": {
         "exclude": [
