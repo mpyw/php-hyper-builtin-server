@@ -22,10 +22,10 @@ class BuiltinServerFactory
         $this->retry = $retry_count;
     }
 
-    protected function createInternalAsync($host, $root)
+    protected function createInternalAsync($host, $docroot, $router)
     {
         $deferred = new Deferred;
-        $process = new BuiltinServer($host, $root, $this->php);
+        $process = new BuiltinServer($host, $docroot, $router, $this->php);
         $process->start($this->loop);
 
         $process->stdout->on('data', function ($output) use ($deferred, $process) {
@@ -41,31 +41,34 @@ class BuiltinServerFactory
             $deferred->reject();
         });
 
-        return $deferred->promise();
-    }
-
-    protected function createInternalWithRetryAsync($host, $root, $retry)
-    {
-        return $this
-        ->createInternalAsync($host, $root)
-        ->then(null, function ($e) use ($retry, $host, $root) {
-            if ($retry < 1) {
-                throw new \RuntimeException('Failed to launch server.');
-            }
-            return $this->createInternalWithRetryAsync($host, $root, $retry - 1);
+        return $deferred->promise()->then(null, function ($e) use ($process) {
+            $process->terminate();
+            throw $e;
         });
     }
 
-    public function createAsync($host = '127.0.0.1', $root = null)
+    protected function createInternalWithRetryAsync($host, $docroot, $router, $retry)
     {
-        return $this->createInternalWithRetryAsync($host, $root, $this->retry);
+        return $this
+        ->createInternalAsync($host, $docroot, $router)
+        ->then(null, function ($e) use ($host, $docroot, $router, $retry) {
+            if ($retry < 1) {
+                throw new \RuntimeException('Failed to launch server.');
+            }
+            return $this->createInternalWithRetryAsync($host, $docroot, $router, $retry - 1);
+        });
     }
 
-    public function createMultipleAsync($n, $host = '127.0.0.1', $root = null)
+    public function createAsync($host = '127.0.0.1', $docroot = null, $router = null)
+    {
+        return $this->createInternalWithRetryAsync($host, $docroot, $router, $this->retry);
+    }
+
+    public function createMultipleAsync($n, $host = '127.0.0.1', $docroot = null, $router = null)
     {
         $promises = [];
         for ($i = 0; $i < $n; ++$i) {
-            $promises[] = $this->createAsync($host, $root);
+            $promises[] = $this->createAsync($host, $docroot, $router);
         }
         return \React\Promise\all($promises);
     }

@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-set_time_limit(0);
-
 if (PHP_SAPI !== 'cli') {
     header('Content-Type: text/plain; charset=UTF-8', true, 400);
     exit("This script only works on php-cli.\n");
@@ -27,13 +25,98 @@ if (is_file(__DIR__ . '/autoload.php')) {
     exit(1);
 }
 
-$loop = React\EventLoop\Factory::create();
-$factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop);
-$factory
-->createMultipleAsync(6)
-->then(function ($processes) use ($loop) {
-    $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
-    $master->addListener('127.0.0.1', 8080, false);
-    $master->addListener('127.0.0.1', 8081, true);
-})->done();
-$loop->run();
+function usage()
+{
+    fwrite(STDERR,
+"
+Usage:
+    $_SERVER[SCRIPT_NAME] <options>
+
+[REQUIRED]
+    -S   Server URL such as \"https://127.0.0.1:8081\".
+         When protocol is omitted, it is assumed as \"http://\".
+         When port is omitted, it is assumed as 80(http) or 443(https).
+         Multiple arguments can be accepted.
+         At least 1 server must be specified.
+         Note that \"https://\" is supported only on PHP 5.6.0 or later.
+
+[OPTIONAL]
+    -t   Document Root. Default is current directory.
+    -n   The number of PHP built-in server clusters. Default is 10.
+    -r   Router script.
+
+"
+    );
+}
+
+$options = getopt('S:t:n:r:h');
+
+$help    = isset($options['h']);
+$servers = isset($options['S']) ? (array)$options['S'] : [];
+$docroot = isset($options['t']) ? current((array)$options['t']) : null;
+$number  = isset($options['n']) ? (int)current((array)$options['n']) : 10;
+$router  = isset($options['r']) ? current((array)$options['r']) : null;
+
+if ($help) {
+    usage();
+    exit(0);
+}
+
+if (!$servers) {
+    fwrite(STDERR, "Error: At least 1 server must be specified.\n");
+    usage();
+    exit(1);
+}
+
+try {
+
+    if ($number < 1 || $number > 20) {
+        throw new \RuntimeException('The number of clusters must be between 1 and 20.');
+    }
+
+    $listeners = [];
+    foreach ($servers as $i => $server) {
+        $proto = parse_url($server, PHP_URL_SCHEME);
+        if ($proto === null) {
+            $proto = 'http';
+            $server = 'http://' . $server;
+        }
+        $host = parse_url($server, PHP_URL_HOST);
+        $port = parse_url($server, PHP_URL_PORT);
+        if ($proto !== 'http' && $proto !== 'https') {
+            throw new \RuntimeException("Server[$i]: Protocol must be http:// or https://.");
+        }
+        if ($host === null || $host === false) {
+            throw new \RuntimeException("Server[$i]: Host is not specified.");
+        }
+        if ($port === null) {
+            $port = $proto === 'https' ? 443 : 80;
+        }
+        if ($port === false) {
+            throw new \RuntimeException("Server[$i]: Port could not be parsed.");
+        }
+        $listeners[] = [$host, $port, $proto === 'https'];
+    }
+
+    $loop = React\EventLoop\Factory::create();
+
+    $factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop);
+    $factory
+    ->createMultipleAsync($number, '127.0.0.1', $docroot)
+    ->then(function ($processes) use ($loop, $listeners, &$procecess) {
+        $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
+        foreach ($listeners as $listener) {
+            $master->addListener($listener[0], $listener[1], $listener[2]);
+        }
+    })->done();
+
+    set_time_limit(0);
+    $loop->run();
+
+} catch (\Exception $e) {
+
+    fwrite(STDERR, "Error: {$e->getMessage()}\n");
+    @shell_exec('killall script');
+    exit(1);
+
+}
