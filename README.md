@@ -35,7 +35,3 @@ Usage:
 ```
 vendor/bin/hyper-run -S localhost:8080 -S https://localhost:8081 -t src/app/www
 ```
-
-## Known Bugs
-
-On `https://`, octets are unexpectedly duplicated.

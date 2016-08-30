@@ -28,12 +28,12 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/boite/socket"
+            "url": "git@github.com:mpyw-forks/socket.git"
         }
     ],
     "require": {
         "php": ">=5.4.0",
-        "react/socket": "dev-develop",
+        "react/socket": "dev-tls-support",
         "react/child-process": "^0.4.1",
         "react/promise": "^2.4"
     },
