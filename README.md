@@ -7,7 +7,7 @@ Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL
 For development environment...
 
 ```
-composer require --dev mpyw/php-hyper-builtin-server:@dev
+composer require --dev mpyw/php-hyper-builtin-server:^2.0
 ```
 
 ## Usage
