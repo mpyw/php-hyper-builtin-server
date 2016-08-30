@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-declare(ticks=1);
 set_time_limit(0);
 
 if (PHP_SAPI !== 'cli') {
@@ -10,15 +9,6 @@ if (PHP_SAPI !== 'cli') {
 }
 if (DIRECTORY_SEPARATOR !== '/') {
     fwrite(STDERR, "Windows is not supported.\n");
-    exit(1);
-}
-if (!isset($_SERVER['argv'][1])) {
-    fwrite(STDERR, "Usage: {$_SERVER['argv'][0]} <DocumentRoot>\n");
-    exit(1);
-}
-$dir = $_SERVER['argv'][1];
-if (!is_dir($dir)) {
-    fwrite(STDERR, "No such directory: $dir\n");
     exit(1);
 }
 
@@ -38,7 +28,12 @@ if (is_file(__DIR__ . '/autoload.php')) {
 }
 
 $loop = React\EventLoop\Factory::create();
-$master = new mpyw\HyperBuiltinServer\Master($loop, __DIR__);
-$master->addListener('127.0.0.1', 8080, false);
-$master->addListener('127.0.0.1', 8081, true);
+$factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop);
+$factory
+->createMultipleAsync(6)
+->then(function ($processes) use ($loop) {
+    $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
+    $master->addListener('127.0.0.1', 8080, false);
+    $master->addListener('127.0.0.1', 8081, true);
+})->done();
 $loop->run();

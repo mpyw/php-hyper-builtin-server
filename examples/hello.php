@@ -1,5 +1,6 @@
 <?php
 
+header('Cache-Control: no-store'); // Very important role for Google Chrome
 header('Content-Type: text/event-stream; charset=UTF-8');
 
 while (ob_get_level()) ob_end_clean();

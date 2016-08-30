@@ -28,7 +28,8 @@
     "require": {
         "php": ">=5.4.0",
         "react/socket": "^0.4.3",
-        "symfony/process": "^3.1"
+        "react/child-process": "^0.4.1",
+        "react/promise": "^2.4"
     },
     "archive": {
         "exclude": [
