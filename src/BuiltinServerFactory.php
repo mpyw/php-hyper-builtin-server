@@ -43,6 +43,11 @@ class BuiltinServerFactory
 
         $timer = new Deferred;
         $this->loop->addTimer(0.05, function () use ($timer, $process) {
+            if (DIRECTORY_SEPARATOR === '\\') {
+                // Pipes opened by proc_open() can break stream_select() loop in Windows.
+                // This fix might do the trick...
+                $process->stderr->close();
+            }
             $timer->resolve($process);
         });
 
