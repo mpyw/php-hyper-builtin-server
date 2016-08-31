@@ -29,7 +29,7 @@ class Master
         $proxy->on('connection', new ConnectionHandler($this, $use_ssl));
         $context = !$use_ssl ? [] : [
             'ssl' => [
-                'local_cert' => __DIR__ . '/certificate.pem',
+                'local_cert' => __DIR__ . '/../certificate.pem',
                 'allow_self_signed' => true,
                 'verify_peer' => false,
             ],
