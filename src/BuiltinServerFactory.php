@@ -29,10 +29,6 @@ class BuiltinServerFactory
         $process = new BuiltinServer($host, $docroot, $router, $this->php);
         $process->start($this->loop);
 
-        $process->stdout->on('data', function ($output) use ($deferred, $process) {
-            $this->stderr->write($output);
-            $deferred->resolve($process);
-        });
         $process->stderr->on('data', function ($output) use ($deferred) {
             $this->stderr->write($output);
             $deferred->reject();
