@@ -81,6 +81,9 @@ try {
     $listeners = [];
     foreach ($servers as $i => $server) {
         $proto = parse_url($server, PHP_URL_SCHEME);
+        if ($proto === false) {
+            throw new \RuntimeException("Server[$i]: The specified URL could not be parsed.");
+        }
         if ($proto === null) {
             $proto = 'http';
             $server = 'http://' . $server;
@@ -90,14 +93,11 @@ try {
         if ($proto !== 'http' && $proto !== 'https') {
             throw new \RuntimeException("Server[$i]: Protocol must be http:// or https://.");
         }
-        if ($host === null || $host === false) {
+        if ($host === null) {
             throw new \RuntimeException("Server[$i]: Host is not specified.");
         }
         if ($port === null) {
             $port = $proto === 'https' ? 443 : 80;
-        }
-        if ($port === false) {
-            throw new \RuntimeException("Server[$i]: Port could not be parsed.");
         }
         $listeners[] = [$host, $port, $proto === 'https', $cert];
     }
