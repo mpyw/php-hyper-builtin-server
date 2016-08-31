@@ -37,12 +37,5 @@
         "react/child-process": "^0.4.1",
         "react/promise": "^2.4"
     },
-    "archive": {
-        "exclude": [
-            "*",
-            ".*",
-            "!/src/*"
-        ]
-    },
     "bin": ["hyper-run"]
 }
