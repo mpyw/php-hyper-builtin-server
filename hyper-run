@@ -120,7 +120,6 @@ try {
 } catch (\Exception $e) {
 
     fwrite(STDERR, "Error: {$e->getMessage()}\n");
-    @shell_exec('killall script');
     exit(1);
 
 }
