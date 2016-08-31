@@ -13,9 +13,6 @@ class BuiltinServer extends Process
     {
         $port = mt_rand(49152, 65535);
         $command = implode(' ', array_filter([
-            'script',
-            '-q',
-            '/dev/null',
             escapeshellarg($php),
             '-S',
             escapeshellarg("$host:$port"),

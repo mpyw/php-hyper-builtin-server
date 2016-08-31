@@ -42,7 +42,14 @@ class BuiltinServerFactory
             $deferred->reject();
         });
 
-        return $deferred->promise()->then(null, function () use ($process) {
+        $timer = new Deferred;
+        $this->loop->addTimer(0.05, function () use ($timer, $process) {
+            $timer->resolve($process);
+        });
+        return \React\Promise\race([
+            $deferred->promise(),
+            $timer->promise(),
+        ])->then(null, function () use ($process) {
             $process->terminate();
             return new RejectedPromise();
         });
