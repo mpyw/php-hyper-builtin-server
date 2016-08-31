@@ -9,7 +9,7 @@ Currently you need the following settings.
 ```json
 {
     "require-dev": {
-        "mpyw/php-hyper-builtin-server": "dev-master"
+        "mpyw/php-hyper-builtin-server": "@dev"
     },
     "minimum-stability": "dev",
     "repositories": [
