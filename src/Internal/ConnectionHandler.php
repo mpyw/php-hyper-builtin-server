@@ -49,13 +49,7 @@ class ConnectionHandler
         try {
             $child = new Stream($this->master->children[$i]->getSocketClient(), $this->master->loop);
             $conn->pipe($child);
-            $child->on('data', function ($data) use ($conn) {
-                $conn->write($data);
-            });
-            $child->on('end', function () use ($conn) {
-                stream_socket_enable_crypto($conn->stream, false);
-                $conn->end();
-            });
+            $child->pipe($conn);
             $child->on('close', function () use ($i) {
                 $this->master->using[$i] = false;
             });
