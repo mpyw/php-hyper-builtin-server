@@ -100,7 +100,7 @@ try {
 
     $loop = React\EventLoop\Factory::create();
 
-    $factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop);
+    $factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop, 5, PHP_BINARY);
     $factory
     ->createMultipleAsync($number, '127.0.0.1', $docroot)
     ->then(function ($processes) use ($loop, $listeners, &$procecess) {
