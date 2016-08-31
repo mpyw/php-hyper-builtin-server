@@ -19,7 +19,7 @@ class BuiltinServer extends Process
             $docroot !== null ? ('-t ' . escapeshellarg($docroot)) : null,
             $router !== null ? escapeshellarg($router) : null,
         ], 'is_string'));
-        parent::__construct($command);
+        parent::__construct($command, null, null, ['bypass_shell' => true]);
         $this->host = $host;
         $this->port = $port;
     }
