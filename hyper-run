@@ -105,7 +105,7 @@ try {
     $loop = React\EventLoop\Factory::create();
 
     $used_processes = [];
-    $factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop, 5, PHP_BINARY);
+    $factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop);
     $factory
     ->createMultipleAsync($number, '127.0.0.1', $docroot)
     ->then(function (array $processes) use ($loop, $listeners, &$used_processes) {

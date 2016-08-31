@@ -9,7 +9,7 @@ class BuiltinServer extends Process
     protected $host;
     protected $port;
 
-    public function __construct($host = '127.0.0.1', $docroot = null, $router = null, $php = 'php')
+    public function __construct($host = '127.0.0.1', $docroot = null, $router = null, $php = PHP_BINARY)
     {
         $port = mt_rand(49152, 65535);
         $command = implode(' ', array_filter([

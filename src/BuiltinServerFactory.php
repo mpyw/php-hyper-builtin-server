@@ -11,10 +11,10 @@ class BuiltinServerFactory
 {
     protected $loop;
     protected $stderr;
-    protected $php = 'php';
+    protected $php = PHP_BINARY;
     protected $retry = 5;
 
-    public function __construct(LoopInterface $loop, $retry_count = 5, $php_command = 'php')
+    public function __construct(LoopInterface $loop, $retry_count = 5, $php_command = PHP_BINARY)
     {
         $this->loop = $loop;
         $this->stderr = new Stream(fopen('php://stderr', 'wb'), $this->loop);
