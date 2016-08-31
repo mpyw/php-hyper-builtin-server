@@ -107,7 +107,7 @@ try {
     $factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop, 5, PHP_BINARY);
     $factory
     ->createMultipleAsync($number, '127.0.0.1', $docroot)
-    ->then(function ($processes) use ($loop, $listeners) {
+    ->then(function (array $processes) use ($loop, $listeners) {
         $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
         foreach ($listeners as $listener) {
             $master->addListener($listener[0], $listener[1], $listener[2]);
