@@ -47,7 +47,7 @@ class BuiltinServerFactory
             $timer->promise(),
         ])->then(null, function () use ($process) {
             $process->terminate();
-            return new RejectedPromise();
+            return new RejectedPromise;
         });
     }
 
