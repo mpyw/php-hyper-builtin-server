@@ -6,6 +6,7 @@ use React\EventLoop\LoopInterface;
 use React\Stream\Stream;
 use React\Promise\Deferred;
 use React\Promise\Promise;
+use React\Promise\RejectedPromise;
 
 class BuiltinServerFactory
 {
@@ -41,9 +42,9 @@ class BuiltinServerFactory
             $deferred->reject();
         });
 
-        return $deferred->promise()->then(null, function ($e) use ($process) {
+        return $deferred->promise()->then(null, function () use ($process) {
             $process->terminate();
-            throw $e;
+            return new RejectedPromise();
         });
     }
 
