@@ -5,10 +5,6 @@ if (PHP_SAPI !== 'cli') {
     header('Content-Type: text/plain; charset=UTF-8', true, 400);
     exit("This script only works on php-cli.\n");
 }
-if (DIRECTORY_SEPARATOR !== '/') {
-    fwrite(STDERR, "Windows is not supported.\n");
-    exit(1);
-}
 
 if (is_file(__DIR__ . '/autoload.php')) {
     require __DIR__ . '/autoload.php';
