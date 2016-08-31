@@ -39,6 +39,8 @@ Usage:
     -t   Document Root. Default is current directory.
     -n   The number of PHP built-in server clusters. Default is 10.
     -r   Router script.
+    -c   Path for alternative PEM-encoded certificate.
+         Default is "....../certificate.pem".
 ```
 
 ## Example
