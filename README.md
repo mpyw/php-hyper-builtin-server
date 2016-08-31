@@ -4,10 +4,21 @@ Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL
 
 ## Installing
 
-For development environment...
+Currently you need the following settings.
 
-```
-composer require --dev mpyw/php-hyper-builtin-server:^2.0
+```json
+{
+    "require-dev": {
+        "mpyw/php-hyper-builtin-server": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:mpyw-forks/socket.git"
+        }
+    ]
+}
 ```
 
 ## Usage
