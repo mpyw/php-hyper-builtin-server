@@ -27,14 +27,17 @@ class BuiltinServerFactory
     {
         $deferred = new Deferred;
         $process = new BuiltinServer($host, $docroot, $router, $this->php);
-        $process->start($this->loop);
 
-        $process->stderr->on('data', function ($output) use ($deferred) {
-            $this->stderr->write($output);
-            $deferred->reject();
-        });
+        $process->start($this->loop);
         $process->on('exit', function ($code) use ($deferred) {
             $this->stderr->write("Process exit with code $code\n");
+            $deferred->reject();
+        });
+
+        $process->stdin->close();
+        $process->stdout->close();
+        $process->stderr->on('data', function ($output) use ($deferred) {
+            $this->stderr->write($output);
             $deferred->reject();
         });
 
@@ -42,6 +45,7 @@ class BuiltinServerFactory
         $this->loop->addTimer(0.05, function () use ($timer, $process) {
             $timer->resolve($process);
         });
+
         return \React\Promise\race([
             $deferred->promise(),
             $timer->promise(),
