@@ -27,6 +27,7 @@ if (is_file(__DIR__ . '/autoload.php')) {
 
 function usage()
 {
+    $cert = __DIR__ . '/certificate.pem';
     fwrite(STDERR,
 "
 Usage:
@@ -41,21 +42,24 @@ Usage:
          Note that \"https://\" is supported only on PHP 5.6.0 or later.
 
 [OPTIONAL]
-    -t   Document Root. Default is current directory.
     -n   The number of PHP built-in server clusters. Default is 10.
-    -r   Router script.
+    -t   Path for document root. Default is the current directory.
+    -r   Path for router script. Default is empty.
+    -c   Path for alternative PEM-encoded certificate.
+         Default is \"$cert\".
 
 "
     );
 }
 
-$options = getopt('S:t:n:r:h');
+$options = getopt('S:n:t:r:c:h');
 
 $help    = isset($options['h']);
 $servers = isset($options['S']) ? (array)$options['S'] : [];
 $docroot = isset($options['t']) ? current((array)$options['t']) : null;
 $number  = isset($options['n']) ? (int)current((array)$options['n']) : 10;
 $router  = isset($options['r']) ? current((array)$options['r']) : null;
+$cert    = isset($options['c']) ? current((array)$options['c']) : (__DIR__ . '/certificate.pem');
 
 if ($help) {
     usage();
@@ -95,7 +99,7 @@ try {
         if ($port === false) {
             throw new \RuntimeException("Server[$i]: Port could not be parsed.");
         }
-        $listeners[] = [$host, $port, $proto === 'https'];
+        $listeners[] = [$host, $port, $proto === 'https', $cert];
     }
 
     $loop = React\EventLoop\Factory::create();

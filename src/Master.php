@@ -23,13 +23,13 @@ class Master
         $this->using = array_fill(0, count($processes), false);
     }
 
-    public function addListener($host = '127.0.0.1', $port = 8080, $use_ssl = false)
+    public function addListener($host = '127.0.0.1', $port = 8080, $use_ssl = false, $cert = null)
     {
         $proxy = new Server($this->loop);
         $proxy->on('connection', new ConnectionHandler($this, $use_ssl));
         $context = !$use_ssl ? [] : [
             'ssl' => [
-                'local_cert' => __DIR__ . '/../certificate.pem',
+                'local_cert' => $cert === null ? (__DIR__ . '/../certificate.pem') : $cert,
                 'allow_self_signed' => true,
                 'verify_peer' => false,
             ],
