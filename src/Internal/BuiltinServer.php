@@ -1,7 +1,6 @@
 <?php
 
 namespace mpyw\HyperBuiltinServer\Internal;
-use React\EventLoop\LoopInterface;
 use React\ChildProcess\Process;
 
 class BuiltinServer extends Process

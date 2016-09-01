@@ -5,7 +5,6 @@ use mpyw\HyperBuiltinServer\Internal\BuiltinServer;
 use React\EventLoop\LoopInterface;
 use React\Stream\Stream;
 use React\Promise\Deferred;
-use React\Promise\Promise;
 use React\Promise\RejectedPromise;
 
 class BuiltinServerFactory

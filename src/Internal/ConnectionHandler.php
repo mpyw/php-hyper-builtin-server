@@ -2,14 +2,8 @@
 
 namespace mpyw\HyperBuiltinServer\Internal;
 use mpyw\HyperBuiltinServer\Master;
-use mpyw\HyperBuiltinServer\Internal\BuiltinServer;
-use React\EventLoop\LoopInterface;
 use React\Socket\ConnectionInterface;
-use React\Socket\Server;
-use React\Socket\ServerInterface;
 use React\Stream\Stream;
-use React\Promise\Promise;
-use React\Promise\Deferred;
 
 class ConnectionHandler
 {
