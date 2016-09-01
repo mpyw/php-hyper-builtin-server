@@ -28,6 +28,7 @@
     },
     "require": {
         "php": ">=5.4.0",
+        "lib-openssl": "*",
         "react/child-process": "^0.4.1",
         "react/promise": "^2.4"
     },
