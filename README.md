@@ -28,11 +28,12 @@ Usage:
     vendor/bin/hyper-run <options>
 
 [Required]
-    -S   Server URL such as "https://127.0.0.1:8081".
+    -S   Server URL such as "127.0.0.1:8080" or "https://127.0.0.1:8081".
          When protocol is omitted, it is assumed as "http://".
          When port is omitted, it is assumed as 80(http) or 443(https).
          Multiple arguments can be accepted.
          At least 1 server must be specified.
+    -s   The same as -S but the default protocol is "https://".
 
 [Optional]
     -n   The number of PHP built-in server clusters. Default is 10.
@@ -49,5 +50,10 @@ Usage:
 ## Example
 
 ```
-vendor/bin/hyper-run -S localhost:8080 -S https://localhost:8081 -t src/app/www
+vendor/bin/hyper-run -S localhost:8080 -s localhost:8081 -t src/app/www
 ```
+
+It listens ...
+
+- `http://localhost:8080`
+- `https://localhost:8081`

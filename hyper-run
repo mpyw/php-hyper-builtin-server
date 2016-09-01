@@ -30,11 +30,12 @@ Usage:
     $_SERVER[SCRIPT_NAME] <options>
 
 [Required]
-    -S   Server URL such as \"https://127.0.0.1:8081\".
+    -S   Server URL such as \"127.0.0.1:8080\" or \"https://127.0.0.1:8081\".
          When protocol is omitted, it is assumed as \"http://\".
          When port is omitted, it is assumed as 80(http) or 443(https).
          Multiple arguments can be accepted.
          At least 1 server must be specified.
+    -s   The same as -S but the default protocol is \"https://\".
 
 [Optional]
     -n   The number of PHP built-in server clusters. Default is 10.
@@ -51,10 +52,11 @@ Usage:
     );
 }
 
-$options = getopt('S:n:t:r:c:h');
+$options = getopt('S:s:n:t:r:c:h');
 
 $help    = isset($options['h']);
 $servers = isset($options['S']) ? (array)$options['S'] : [];
+$secures = isset($options['s']) ? (array)$options['s'] : [];
 $docroot = isset($options['t']) ? current((array)$options['t']) : null;
 $number  = isset($options['n']) ? (int)current((array)$options['n']) : 10;
 $router  = isset($options['r']) ? current((array)$options['r']) : null;
@@ -65,7 +67,7 @@ if ($help) {
     exit(0);
 }
 
-if (!$servers) {
+if (!$servers && !$secures) {
     fwrite(STDERR, "Error: At least 1 server must be specified.\n");
     usage();
     exit(1);
@@ -78,27 +80,29 @@ try {
     }
 
     $listeners = [];
-    foreach ($servers as $i => $server) {
-        $proto = parse_url($server, PHP_URL_SCHEME);
-        if ($proto === false) {
-            throw new \RuntimeException("Server[$i]: The specified URL could not be parsed.");
+    foreach ([$servers, $secures] as $type => $group) {
+        foreach ($group as $i => $server) {
+            $proto = parse_url($server, PHP_URL_SCHEME);
+            if ($proto === false) {
+                throw new \RuntimeException("The specified URL could not be parsed.");
+            }
+            if ($proto === null) {
+                $proto = $type === 0 ? 'http' : 'https';
+                $server = "$proto://$server";
+            }
+            $host = parse_url($server, PHP_URL_HOST);
+            $port = parse_url($server, PHP_URL_PORT);
+            if ($proto !== 'http' && $proto !== 'https') {
+                throw new \RuntimeException("Server[$server]: Protocol must be http:// or https://.");
+            }
+            if ($host === null) {
+                throw new \RuntimeException("Server[$server]: Host is not specified.");
+            }
+            if ($port === null) {
+                $port = $proto === 'https' ? 443 : 80;
+            }
+            $listeners[] = [$host, $port, $proto === 'https', $cert];
         }
-        if ($proto === null) {
-            $proto = 'http';
-            $server = 'http://' . $server;
-        }
-        $host = parse_url($server, PHP_URL_HOST);
-        $port = parse_url($server, PHP_URL_PORT);
-        if ($proto !== 'http' && $proto !== 'https') {
-            throw new \RuntimeException("Server[$i]: Protocol must be http:// or https://.");
-        }
-        if ($host === null) {
-            throw new \RuntimeException("Server[$i]: Host is not specified.");
-        }
-        if ($port === null) {
-            $port = $proto === 'https' ? 443 : 80;
-        }
-        $listeners[] = [$host, $port, $proto === 'https', $cert];
     }
 
     $loop = React\EventLoop\Factory::create();
