@@ -33,8 +33,8 @@ Example:
     $_SERVER[SCRIPT_NAME] -S localhost:8080 -s localhost:8081
 
 [Required]
-    -S   \"Host:Port\" of an HTTP server. Multiple arguments can be accepted.
-    -s   \"Host:Port\" of an HTTPS server. Multiple arguments can be accepted.
+    -S   \"<Host>:<Port>\" of an HTTP server. Multiple arguments can be accepted.
+    -s   \"<Host>:<Port>\" of an HTTPS server. Multiple arguments can be accepted.
 
 [Optional]
     -n   The number of PHP built-in server clusters, 1 to 20. Default is 10.
