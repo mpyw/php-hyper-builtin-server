@@ -4,61 +4,85 @@ Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL
 
 ## Installing
 
-Currently you need the following settings.
+### Global install
 
-```json
-{
-    "require-dev": {
-        "mpyw/php-hyper-builtin-server": "@dev"
-    },
-    "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:mpyw-forks/socket.git"
-        }
-    ]
-}
 ```
+composer global require mpyw/php-hyper-builtin-server:^2.0
+```
+
+If not yet, you must add **`~/.composer/vendor/bin`** to `$PATH`.  
+Append the following statement to `~/.bashrc`, `~/.zshrc` and so on.
+
+```bash
+export PATH="~/.composer/vendor/bin:$PATH"
+```
+
+### Local install only for development environment
+
+```
+composer require --dev mpyw/php-hyper-builtin-server:^2.0
+```
+
+Use **`vendor/bin/hyper-run`** as the execution path.
 
 ## Usage
 
-```
+```ShellSession
+mpyw@localhost:~$ hyper-run -h
+
 Usage:
-    vendor/bin/hyper-run <options>
+    hyper-run <options>
+
+Example:
+    hyper-run -S localhost:8080 -s localhost:8081
 
 [Required]
-    -S   Server URL such as "127.0.0.1:8080" or "https://127.0.0.1:8081".
-         When protocol is omitted, it is assumed as "http://".
-         When port is omitted, it is assumed as 80(http) or 443(https).
-         Multiple arguments can be accepted.
-         At least 1 server must be specified.
-    -s   The same as -S but the default protocol is "https://".
+    -S   "<Host>:<Port>" of an HTTP server. Multiple arguments can be accepted.
+    -s   "<Host>:<Port>" of an HTTPS server. Multiple arguments can be accepted.
 
 [Optional]
-    -n   The number of PHP built-in server clusters. Default is 10.
+    -n   The number of PHP built-in server clusters, 1 to 20. Default is 10.
     -t   Path for document root. Default is the current directory.
     -r   Path for router script. Default is empty.
-    -c   Path for alternative PEM-encoded certificate.
-         Default is "....../certificate.pem".
+    -c   Path for PEM-encoded certificate.
+         Default is "/Users/mpyw/.composer/vendor/mpyw/php-hyper-builtin-server/certificate.pem".
 
-[Restriction]
-    - "https://" is supported only on PHP 5.6.0 or later.
+Restriction:
+    - The option -s is supported only on PHP 5.6.0 or later.
     - Access logs are not displayed in Windows.
+    
+mpyw@localhost:~$
 ```
 
 ## Example
 
 ```
-vendor/bin/hyper-run -S localhost:8080 -s localhost:8081 -t src/app/www
+hyper-run -S localhost:8080 -s localhost:8081 -t src/app/www
 ```
 
-It listens...
+It listens on
 
 - `http://localhost:8080`
 - `https://localhost:8081`
 
-Note for Windows users:
+using the directory `src/app/www` as the document root.
 
-cmd.exe has no option to execute via shebang `#!/usr/bin/env php`,  
-so you need to use `php vendor/bin/hyper-run` instead of `vendor/bin/hyper-run`.
+## Note for Windows users
+
+Unfortunately `cmd.exe` has no option to execute via shebang `#!/usr/bin/env php`.  
+So you need to create the following batch file to save the proper directory.
+
+### For Standalone PHP 
+
+```bat
+@echo OFF
+"C:\php\php.exe" "%HOMEPATH%\.composer\vendor\mpyw\php-hyper-builtin-server\hyper-run" %*
+```
+
+### For XAMPP
+
+```bat
+@echo OFF
+"C:\xampp\php\php.exe" "%HOMEPATH%\.composer\vendor\mpyw\php-hyper-builtin-server\hyper-run" %*
+```
+
