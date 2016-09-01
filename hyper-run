@@ -37,15 +37,15 @@ Example:
     -s   \"<Host>:<Port>\" of an HTTPS server. Multiple arguments can be accepted.
 
 [Optional]
-    -n   The number of PHP built-in server clusters, 1 to 20. Default is 10.
-    -t   Path for document root. Default is the current directory.
-    -r   Path for router script. Default is empty.
-    -c   Path for PEM-encoded certificate.
+    -n   The number of PHP built-in server clusters, from 1 to 20. Default is 10.
+    -t   Path for the document root. Default is the current directory.
+    -r   Path for the router script. Default is empty.
+    -c   Path for the PEM-encoded certificate.
          Default is \"$cert\".
 
 Restriction:
-    - The option -s is supported only on PHP 5.6.0 or later.
-    - Access logs are not displayed in Windows.
+    - The option -s is only supported on PHP 5.6.0 or later.
+    - Access logs will not be displayed on Windows.
 
 "
     );
