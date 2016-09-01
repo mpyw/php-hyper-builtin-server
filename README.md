@@ -53,7 +53,12 @@ Usage:
 vendor/bin/hyper-run -S localhost:8080 -s localhost:8081 -t src/app/www
 ```
 
-It listens ...
+It listens...
 
 - `http://localhost:8080`
 - `https://localhost:8081`
+
+Note for Windows users:
+
+cmd.exe has no option to execute via shebang `#!/usr/bin/env php`,  
+so you need to use `php vendor/bin/hyper-run` instead of `vendor/bin/hyper-run`.
