@@ -1,0 +1,3 @@
+[submodule "socket"]
+	path = socket
+	url = git@github.com:mpyw-forks/socket.git

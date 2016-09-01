@@ -22,7 +22,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "mpyw\\HyperBuiltinServer\\": "src/"
+            "mpyw\\HyperBuiltinServer\\": "src/",
+            "React\\Socket\\": "socket/src/"
         }
     },
     "repositories": [
@@ -33,7 +34,6 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "react/socket": "dev-tls-support",
         "react/child-process": "^0.4.1",
         "react/promise": "^2.4"
     },
