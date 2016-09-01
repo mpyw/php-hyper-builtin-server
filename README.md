@@ -27,20 +27,23 @@ Currently you need the following settings.
 Usage:
     vendor/bin/hyper-run <options>
 
-[REQUIRED]
+[Required]
     -S   Server URL such as "https://127.0.0.1:8081".
          When protocol is omitted, it is assumed as "http://".
          When port is omitted, it is assumed as 80(http) or 443(https).
          Multiple arguments can be accepted.
          At least 1 server must be specified.
-         Note that "https://" is supported only on PHP 5.6.0 or later.
 
-[OPTIONAL]
-    -t   Document Root. Default is current directory.
+[Optional]
     -n   The number of PHP built-in server clusters. Default is 10.
-    -r   Router script.
+    -t   Path for document root. Default is the current directory.
+    -r   Path for router script. Default is empty.
     -c   Path for alternative PEM-encoded certificate.
          Default is "....../certificate.pem".
+
+[Restriction]
+    - "https://" is supported only on PHP 5.6.0 or later.
+    - Access logs are not displayed in Windows.
 ```
 
 ## Example
