@@ -1,6 +1,6 @@
 # PHP Hyper Built-in Server
 
-Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL encryption.  
+Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL encryption
 
 ## Installing
 
@@ -11,7 +11,7 @@ composer global require mpyw/php-hyper-builtin-server:^2.0
 ```
 
 If not yet, you must add **`~/.composer/vendor/bin`** to `$PATH`.  
-Append the following statement to `~/.bashrc`, `~/.zshrc` and so on.
+Append the following statement to `~/.bashrc`, `~/.zshrc` or what not.
 
 ```bash
 export PATH="~/.composer/vendor/bin:$PATH"
@@ -41,16 +41,16 @@ Example:
     -s   "<Host>:<Port>" of an HTTPS server. Multiple arguments can be accepted.
 
 [Optional]
-    -n   The number of PHP built-in server clusters, 1 to 20. Default is 10.
-    -t   Path for document root. Default is the current directory.
-    -r   Path for router script. Default is empty.
-    -c   Path for PEM-encoded certificate.
+    -n   The number of PHP built-in server clusters, from 1 to 20. Default is 10.
+    -t   Path for the document root. Default is the current directory.
+    -r   Path for the router script. Default is empty.
+    -c   Path for the PEM-encoded certificate.
          Default is "/Users/mpyw/.composer/vendor/mpyw/php-hyper-builtin-server/certificate.pem".
 
-Restriction:
-    - The option -s is supported only on PHP 5.6.0 or later.
-    - Access logs are not displayed in Windows.
-    
+Restrictions:
+    - The option -s is only supported on PHP 5.6.0 or later.
+    - Access logs will not be displayed on Windows.
+
 mpyw@localhost:~$
 ```
 
@@ -69,10 +69,9 @@ using the directory `src/app/www` as the document root.
 
 ## Note for Windows users
 
-Unfortunately `cmd.exe` has no option to execute via shebang `#!/usr/bin/env php`.  
-So you need to create the following batch file to save the proper directory.
+Unfortunately, `cmd.exe` has no option to run via shebang `#!/usr/bin/env php`, so you need to create the following batch file in the proper directory.
 
-### For Standalone PHP 
+### For Standalone PHP
 
 ```bat
 @echo OFF
