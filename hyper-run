@@ -116,7 +116,7 @@ try {
         $used_processes = $processes;
         $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
         foreach ($listeners as $listener) {
-            $master->addListener($listener[0], $listener[1], $listener[2]);
+            call_user_func_array([$master, 'addListener'], $listener);
         }
     })
     ->then(null, function ($e) use (&$used_processes) {
