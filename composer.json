@@ -26,12 +26,6 @@
             "React\\Socket\\": "socket/src/"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:mpyw-forks/socket.git"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
         "react/child-process": "^0.4.1",
