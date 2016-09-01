@@ -1,32 +1,26 @@
 <?php
 
 namespace mpyw\HyperBuiltinServer;
-use mpyw\HyperBuiltinServer\Internal\BuiltinServer;
 use mpyw\HyperBuiltinServer\Internal\ConnectionHandler;
+use mpyw\HyperBuiltinServer\Internal\Queue;
 use React\EventLoop\LoopInterface;
 use React\Socket\Server;
 
 class Master
 {
     public $loop;
-    public $children = [];
-    public $using = [];
+    public $queue;
 
     public function __construct(LoopInterface $loop, array $processes)
     {
-        if (!$processes) {
-            throw new \LengthException('At least 1 process required.');
-        }
-        array_map(function (BuiltinServer $_) {}, $processes);
         $this->loop = $loop;
-        $this->children = array_values($processes);
-        $this->using = array_fill(0, count($processes), false);
+        $this->queue = new Queue($processes);
     }
 
     public function addListener($host = '127.0.0.1', $port = 8080, $use_ssl = false, $cert = null)
     {
         $proxy = new Server($this->loop);
-        $proxy->on('connection', new ConnectionHandler($this, $use_ssl));
+        $proxy->on('connection', new ConnectionHandler($this));
         $context = !$use_ssl ? [] : [
             'ssl' => [
                 'local_cert' => $cert === null ? (__DIR__ . '/../certificate.pem') : $cert,
