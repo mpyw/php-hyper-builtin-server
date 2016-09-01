@@ -30,22 +30,18 @@ Usage:
     $_SERVER[SCRIPT_NAME] <options>
 
 [Required]
-    -S   Server URL such as \"127.0.0.1:8080\" or \"https://127.0.0.1:8081\".
-         When protocol is omitted, it is assumed as \"http://\".
-         When port is omitted, it is assumed as 80(http) or 443(https).
-         Multiple arguments can be accepted.
-         At least 1 server must be specified.
-    -s   The same as -S but the default protocol is \"https://\".
+    -S   \"Host:Port\" of an HTTP server. Multiple arguments can be accepted.
+    -s   \"Host:Port\" of an HTTPS server. Multiple arguments can be accepted.
 
 [Optional]
-    -n   The number of PHP built-in server clusters. Default is 10.
+    -n   The number of PHP built-in server clusters, 1 to 20. Default is 10.
     -t   Path for document root. Default is the current directory.
     -r   Path for router script. Default is empty.
-    -c   Path for alternative PEM-encoded certificate.
+    -c   Path for PEM-encoded certificate.
          Default is \"$cert\".
 
-[Restriction]
-    - \"https://\" is supported only on PHP 5.6.0 or later.
+Restriction:
+    - The option -s is supported only on PHP 5.6.0 or later.
     - Access logs are not displayed in Windows.
 
 "
@@ -58,7 +54,7 @@ $help    = isset($options['h']);
 $servers = isset($options['S']) ? (array)$options['S'] : [];
 $secures = isset($options['s']) ? (array)$options['s'] : [];
 $docroot = isset($options['t']) ? current((array)$options['t']) : null;
-$number  = isset($options['n']) ? (int)current((array)$options['n']) : 10;
+$number  = isset($options['n']) ? current((array)$options['n']) : '10';
 $router  = isset($options['r']) ? current((array)$options['r']) : null;
 $cert    = isset($options['c']) ? current((array)$options['c']) : (__DIR__ . '/certificate.pem');
 
@@ -75,33 +71,35 @@ if (!$servers && !$secures) {
 
 try {
 
-    if ($number < 1 || $number > 20) {
+    if (!ctype_digit($number) || $number < 1 || $number > 20) {
         throw new \RuntimeException('The number of clusters must be between 1 and 20.');
+    }
+    if ($docroot !== null && !is_dir($docroot)) {
+        throw new \RuntimeException("No such document root directory: $docroot");
+    }
+    if ($router !== null && !is_file($router)) {
+        throw new \RuntimeException("No such router script file: $router");
+    }
+    if (!is_file($cert)) {
+        throw new \RuntimeException("No such certificate file: $cert");
+    }
+    if (!openssl_pkey_get_public("file://$cert")) {
+        throw new \RuntimeException("Invalid certificate file: $cert");
     }
 
     $listeners = [];
     foreach ([$servers, $secures] as $type => $group) {
         foreach ($group as $i => $server) {
-            $proto = parse_url($server, PHP_URL_SCHEME);
-            if ($proto === false) {
-                throw new \RuntimeException("The specified URL could not be parsed.");
+            list($host, $port) = explode(':', $server, 2) + [1 => ''];
+            $ip = filter_var(gethostbyname($host), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+            $regex = '/\A(?:[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])\z/';
+            if ($ip === false || !preg_match($regex, $port)) {
+                throw new \RuntimeException("Invalid host or port: $server");
             }
-            if ($proto === null) {
-                $proto = $type === 0 ? 'http' : 'https';
-                $server = "$proto://$server";
+            if (isset($listeners[$server])) {
+                throw new \RuntimeException("Duplicated entry: $server");
             }
-            $host = parse_url($server, PHP_URL_HOST);
-            $port = parse_url($server, PHP_URL_PORT);
-            if ($proto !== 'http' && $proto !== 'https') {
-                throw new \RuntimeException("Server[$server]: Protocol must be http:// or https://.");
-            }
-            if ($host === null) {
-                throw new \RuntimeException("Server[$server]: Host is not specified.");
-            }
-            if ($port === null) {
-                $port = $proto === 'https' ? 443 : 80;
-            }
-            $listeners[] = [$host, $port, $proto === 'https', $cert];
+            $listeners[$server] = [$host, $port, $type === 1, $cert];
         }
     }
 
