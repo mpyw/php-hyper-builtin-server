@@ -2,7 +2,7 @@
 
 namespace mpyw\HyperBuiltinServer\Internal;
 use React\Socket\ConnectionInterface;
-use React\Stream\Stream;
+use React\Stream\WritableStreamInterface;
 
 class Sink
 {
@@ -29,7 +29,7 @@ class Sink
         });
     }
 
-    public function pipe(Stream $dst)
+    public function pipe(WritableStreamInterface $dst)
     {
         $this->dst = $dst;
         if ($this->buffer !== '') {
