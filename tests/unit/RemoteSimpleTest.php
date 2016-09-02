@@ -18,12 +18,6 @@ class RemoteSimpleTest extends \Codeception\TestCase\Test
     {
     }
 
-    private function assertInRange($min, $actual, $max)
-    {
-        $this->assertGreaterThanOrEqual($min, $actual);
-        $this->assertLessThanOrEqual($max, $actual);
-    }
-
     private static function curlInitWith($url, array $params = [])
     {
         $ch = curl_init();
@@ -71,77 +65,53 @@ class RemoteSimpleTest extends \Codeception\TestCase\Test
 
     public function testDelayed()
     {
-        $start = microtime(true);
         Co::wait($ch = $this->curlInitWith('http://localhost:8080/fast_hello.php'));
-        $end = microtime(true);
         $this->curlAssert200OK($ch);
-        $this->assertInRange(0.1, $end - $start, 0.2);
     }
 
     public function testDelayedSecure()
     {
-        $start = microtime(true);
         Co::wait($ch = $this->curlInitWith('https://localhost:8081/fast_hello.php'));
-        $end = microtime(true);
         $this->curlAssert200OK($ch);
-        $this->assertInRange(0.11, $end - $start, 0.21);
     }
 
     public function testDelayedGroupSingle()
     {
-        $start = microtime(true);
         Co::wait($chs = $this->curlsInitWith(5, 'http://localhost:8080/fast_hello.php'));
-        $end = microtime(true);
         $this->curlsAssert200OK($chs);
-        $this->assertInRange(0.12, $end - $start, 0.22);
     }
 
     public function testDelayedGroupSingleSecure()
     {
-        $start = microtime(true);
         Co::wait($chs = $this->curlsInitWith(5, 'https://localhost:8081/fast_hello.php'));
-        $end = microtime(true);
         $this->curlsAssert200OK($chs);
-        $this->assertInRange(0.12, $end - $start, 0.22);
     }
 
     public function testDelayedGroupDouble()
     {
-        $start = microtime(true);
         Co::wait($chs = $this->curlsInitWith(10, 'http://localhost:8080/fast_hello.php'));
-        $end = microtime(true);
         $this->curlsAssert200OK($chs);
-        $this->assertInRange(0.28, $end - $start, 0.38);
     }
 
     public function testDelayedGroupDoubleSecure()
     {
-        $start = microtime(true);
         Co::wait($chs = $this->curlsInitWith(10, 'https://localhost:8081/fast_hello.php'));
-        $end = microtime(true);
         $this->curlsAssert200OK($chs);
-        $this->assertInRange(0.32, $end - $start, 0.42);
     }
 
     public function testDelayedGroupDoubleAtOnce()
     {
-        $start = microtime(true);
         Co::wait($chs = $this->curlsInitWith(10, 'http://localhost:8080/fast_hello.php'), [
             'concurrency' => 0,
         ]);
-        $end = microtime(true);
         $this->curlsAssert200OK($chs);
-        $this->assertInRange(0.28, $end - $start, 0.38);
     }
 
     public function testDelayedGroupDoubleAtOnceSecure()
     {
-        $start = microtime(true);
         Co::wait($chs = $this->curlsInitWith(10, 'https://localhost:8081/fast_hello.php'), [
             'concurrency' => 0,
         ]);
-        $end = microtime(true);
         $this->curlsAssert200OK($chs);
-        $this->assertInRange(0.32, $end - $start, 0.42);
     }
 }
