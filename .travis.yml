@@ -1,0 +1,24 @@
+language: php
+
+php:
+  - 7.0.8
+
+install:
+  - composer install
+  - ./vendor/bin/codecept build
+
+sudo: false
+
+cache:
+  directories:
+    - ./vendor
+    - $HOME/.composer/cache
+
+script:
+  - ./hyper-run -S localhost:8080 -s localhost:8081 -n 5 -t examples &
+  - vendor/bin/codecept run unit
+  - kill $!
+
+branches:
+  only:
+    - master
