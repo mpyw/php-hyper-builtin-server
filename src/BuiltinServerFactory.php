@@ -63,7 +63,7 @@ class BuiltinServerFactory
     {
         return $this
         ->createInternalAsync($host, $docroot, $router)
-        ->then(null, function ($e) use ($host, $docroot, $router, $retry) {
+        ->then(null, function () use ($host, $docroot, $router, $retry) {
             if ($retry < 1) {
                 throw new \RuntimeException('Failed to launch server.');
             }
