@@ -35,8 +35,10 @@ class RemoteSimpleTest extends \Codeception\TestCase\Test
     {
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL => 'http://localhost:8080/upload_form.php',
+            CURLOPT_URL => 'https://localhost:8081/upload_form.php',
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
         ]);
         curl_exec($ch);
         $this->assertEquals(200, curl_getinfo($ch, CURLINFO_HTTP_CODE));
