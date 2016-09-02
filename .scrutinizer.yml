@@ -10,3 +10,5 @@ filter:
     - vendor/*
     - socket/*
     - hyper-run
+
+build: false
