@@ -13,7 +13,7 @@ class SecureConnection extends Connection
     public function handleData($stream)
     {
         if (! $this->isSecure) {
-            $enabled = stream_socket_enable_crypto($stream, true, $this->protocolNumber);
+            $enabled = @stream_socket_enable_crypto($stream, true, $this->protocolNumber);
             if ($enabled === false) {
                 $this
                     ->err('Failed to complete a secure handshake with the client.')
