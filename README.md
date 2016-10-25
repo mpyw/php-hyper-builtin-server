@@ -14,7 +14,7 @@ If not yet, you must add **`~/.composer/vendor/bin`** to `$PATH`.
 Append the following statement to `~/.bashrc`, `~/.zshrc` or what not.
 
 ```bash
-export PATH="~/.composer/vendor/bin:$PATH"
+export PATH="$HOME/.composer/vendor/bin:$PATH"
 ```
 
 ### Local install only for development environment
