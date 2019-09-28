@@ -117,6 +117,12 @@ try {
         $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
         foreach ($listeners as $listener) {
             call_user_func_array([$master, 'addListener'], $listener);
+
+            $host = sprintf(
+                '%s://%s:%s',
+                $listener[2] ? 'https' : 'http', $listener[0], $listener[1]
+            );
+            fwrite(STDOUT, "Development server started: <{$host}>\n");
         }
     })
     ->then(null, function ($e) use (&$used_processes) {
