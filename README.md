@@ -1,4 +1,4 @@
-# PHP Hyper Built-in Server [![Build Status](https://travis-ci.org/mpyw/php-hyper-builtin-server.svg?branch=master)](https://travis-ci.org/mpyw/php-hyper-builtin-server) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/php-hyper-builtin-server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/php-hyper-builtin-server/?branch=master)
+# PHP Hyper Built-in Server [![Build Status](https://travis-ci.com/mpyw/php-hyper-builtin-server.svg?branch=master)](https://travis-ci.com/mpyw/php-hyper-builtin-server) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/php-hyper-builtin-server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/php-hyper-builtin-server/?branch=master)
 
 Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL encryption
 

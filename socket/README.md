@@ -1,6 +1,6 @@
 # Socket Component
 
-[![Build Status](https://secure.travis-ci.org/reactphp/socket.png?branch=master)](http://travis-ci.org/reactphp/socket)
+[![Build Status](https://secure.travis-ci.com/reactphp/socket.png?branch=master)](http://travis-ci.com/reactphp/socket)
 
 Library for building an evented socket server.
 
