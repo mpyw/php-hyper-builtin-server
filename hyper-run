@@ -108,12 +108,12 @@ try {
 
     $loop = React\EventLoop\Factory::create();
 
-    $used_processes = [];
+    $usedProcesses = [];
     $factory = new mpyw\HyperBuiltinServer\BuiltinServerFactory($loop);
     $factory
     ->createMultipleAsync($number, '127.0.0.1', $docroot, $router)
-    ->then(function (array $processes) use ($loop, $listeners, &$used_processes) {
-        $used_processes = $processes;
+    ->then(function (array $processes) use ($loop, $listeners, &$usedProcesses) {
+        $usedProcesses = $processes;
         $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
         foreach ($listeners as $listener) {
             call_user_func_array([$master, 'addListener'], $listener);
@@ -125,8 +125,8 @@ try {
             fwrite(STDOUT, "Development server started: <{$host}>\n");
         }
     })
-    ->then(null, function ($e) use (&$used_processes) {
-        foreach ($used_processes as $process) {
+    ->then(null, function ($e) use (&$usedProcesses) {
+        foreach ($usedProcesses as $process) {
             $process->terminate();
         }
         throw $e;
