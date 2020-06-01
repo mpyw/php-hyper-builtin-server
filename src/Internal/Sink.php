@@ -27,6 +27,12 @@ class Sink
                 $this->dst->end();
             }
         });
+        $src->on('error', function () {
+            $this->end = true;
+            if ($this->dst) {
+                $this->dst->end();
+            }
+        });
     }
 
     public function pipe(WritableStreamInterface $dst)
