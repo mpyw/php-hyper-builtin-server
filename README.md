@@ -1,13 +1,13 @@
 # PHP Hyper Built-in Server [![Build Status](https://travis-ci.com/mpyw/php-hyper-builtin-server.svg?branch=master)](https://travis-ci.com/mpyw/php-hyper-builtin-server) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpyw/php-hyper-builtin-server/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpyw/php-hyper-builtin-server/?branch=master)
 
-Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL encryption
+Reverse proxy for PHP built-in server which supports multiprocessing and TLS/SSL encryption.
 
 ## Installing
 
 ### Global install
 
-```
-composer global require mpyw/php-hyper-builtin-server:^2.0
+```shell script
+composer global require mpyw/php-hyper-builtin-server:^3.0
 ```
 
 If not yet, you must add **`~/.composer/vendor/bin`** to `$PATH`.  
@@ -19,8 +19,8 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 ### Local install only for development environment
 
-```
-composer require --dev mpyw/php-hyper-builtin-server:^2.0
+```shell script
+composer require --dev mpyw/php-hyper-builtin-server:^3.0
 ```
 
 Use **`vendor/bin/hyper-run`** as the execution path.
@@ -56,7 +56,7 @@ mpyw@localhost:~$
 
 ## Example
 
-```
+```shell script
 hyper-run -S localhost:8080 -s localhost:8081 -t src/app/www
 ```
 
