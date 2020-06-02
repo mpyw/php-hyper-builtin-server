@@ -53,8 +53,8 @@ hyper-run -S localhost:8080 -s localhost:4000 -t src/app/www
 
 2 servers will start with the directory `src/app/www` as the document root:
 
-- [http://localhost:8080](http://localhost:8080)
-- [https://localhost:4000](https://localhost:4000)
+- <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
+- <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>
 
 ### Command Reference
 
