@@ -17,7 +17,14 @@
     "authors": [
         {
             "name": "mpyw",
-            "email": "ryosuke_i_628@yahoo.co.jp"
+            "email": "ryosuke_i_628@yahoo.co.jp",
+            "role": "Developer"
+        },
+        {
+            "name": "Anton Komarev",
+            "email": "anton@komarev.com",
+            "homepage": "https://komarev.com",
+            "role": "Developer"
         }
     ],
     "autoload": {
