@@ -15,7 +15,7 @@ cache:
     - $HOME/.composer/cache
 
 script:
-  - ./hyper-run -S localhost:8080 -s localhost:8081 -n 5 -t examples &
+  - ./hyper-run -S localhost:8000 -s localhost:44300 -n 5 -t examples &
   - vendor/bin/codecept run unit
   - kill $!
 

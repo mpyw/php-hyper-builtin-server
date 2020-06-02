@@ -53,55 +53,55 @@ class RemoteSimpleTest extends \Codeception\TestCase\Test
 
     public function testSimple()
     {
-        Co::wait($ch = $this->curlInitWith('http://localhost:8080/upload_form.php'));
+        Co::wait($ch = $this->curlInitWith('http://localhost:8000/upload_form.php'));
         $this->curlAssert200OK($ch);
     }
 
     public function testSimpleSecure()
     {
-        Co::wait($ch = $this->curlInitWith('https://localhost:8081/upload_form.php'));
+        Co::wait($ch = $this->curlInitWith('https://localhost:44300/upload_form.php'));
         $this->curlAssert200OK($ch);
     }
 
     public function testDelayed()
     {
-        Co::wait($ch = $this->curlInitWith('http://localhost:8080/fast_hello.php'));
+        Co::wait($ch = $this->curlInitWith('http://localhost:8000/fast_hello.php'));
         $this->curlAssert200OK($ch);
     }
 
     public function testDelayedSecure()
     {
-        Co::wait($ch = $this->curlInitWith('https://localhost:8081/fast_hello.php'));
+        Co::wait($ch = $this->curlInitWith('https://localhost:44300/fast_hello.php'));
         $this->curlAssert200OK($ch);
     }
 
     public function testDelayedGroupSingle()
     {
-        Co::wait($chs = $this->curlsInitWith(5, 'http://localhost:8080/fast_hello.php'));
+        Co::wait($chs = $this->curlsInitWith(5, 'http://localhost:8000/fast_hello.php'));
         $this->curlsAssert200OK($chs);
     }
 
     public function testDelayedGroupSingleSecure()
     {
-        Co::wait($chs = $this->curlsInitWith(5, 'https://localhost:8081/fast_hello.php'));
+        Co::wait($chs = $this->curlsInitWith(5, 'https://localhost:44300/fast_hello.php'));
         $this->curlsAssert200OK($chs);
     }
 
     public function testDelayedGroupDouble()
     {
-        Co::wait($chs = $this->curlsInitWith(10, 'http://localhost:8080/fast_hello.php'));
+        Co::wait($chs = $this->curlsInitWith(10, 'http://localhost:8000/fast_hello.php'));
         $this->curlsAssert200OK($chs);
     }
 
     public function testDelayedGroupDoubleSecure()
     {
-        Co::wait($chs = $this->curlsInitWith(10, 'https://localhost:8081/fast_hello.php'));
+        Co::wait($chs = $this->curlsInitWith(10, 'https://localhost:44300/fast_hello.php'));
         $this->curlsAssert200OK($chs);
     }
 
     public function testDelayedGroupDoubleAtOnce()
     {
-        Co::wait($chs = $this->curlsInitWith(10, 'http://localhost:8080/fast_hello.php'), [
+        Co::wait($chs = $this->curlsInitWith(10, 'http://localhost:8000/fast_hello.php'), [
             'concurrency' => 0,
         ]);
         $this->curlsAssert200OK($chs);
@@ -109,7 +109,7 @@ class RemoteSimpleTest extends \Codeception\TestCase\Test
 
     public function testDelayedGroupDoubleAtOnceSecure()
     {
-        Co::wait($chs = $this->curlsInitWith(10, 'https://localhost:8081/fast_hello.php'), [
+        Co::wait($chs = $this->curlsInitWith(10, 'https://localhost:44300/fast_hello.php'), [
             'concurrency' => 0,
         ]);
         $this->curlsAssert200OK($chs);

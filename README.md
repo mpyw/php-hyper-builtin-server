@@ -27,6 +27,37 @@ Use **`vendor/bin/hyper-run`** as the execution path.
 
 ## Usage
 
+### Quick start
+
+```shell script
+hyper-run -S localhost -s localhost -t src/app/www
+```
+
+2 servers will start with the directory `src/app/www` as the document root:
+
+- `http://localhost:8000`
+- `https://localhost:44300`
+
+Servers start with first unoccupied port within range depending on a scheme.
+
+| Scheme  | Default | Range       |
+| ------- | ------- | ----------- |
+| `HTTP`  | 8000    | 8000-8099   |
+| `HTTPS` | 44300   | 44300-44399 |
+
+### Customize ports
+
+```shell script
+hyper-run -S localhost:8080 -s localhost:4000 -t src/app/www
+```
+
+2 servers will start with the directory `src/app/www` as the document root:
+
+- `http://localhost:8080`
+- `https://localhost:4000`
+
+### Command Reference
+
 ```ShellSession
 mpyw@localhost:~$ hyper-run -h
 
@@ -34,7 +65,7 @@ Usage:
     hyper-run <options>
 
 Example:
-    hyper-run -S localhost:8080 -s localhost:8081
+    hyper-run -S localhost:8000 -s localhost:44300
 
 [Required]
     -S   "<Host>:<Port>" of an HTTP server. Multiple arguments can be accepted.
@@ -53,19 +84,6 @@ Restrictions:
 
 mpyw@localhost:~$
 ```
-
-## Example
-
-```shell script
-hyper-run -S localhost:8080 -s localhost:8081 -t src/app/www
-```
-
-It listens on
-
-- `http://localhost:8080`
-- `https://localhost:8081`
-
-using the directory `src/app/www` as the document root.
 
 ## Note for Windows users
 
