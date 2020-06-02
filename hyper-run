@@ -85,7 +85,9 @@ function startListener($master, $listener)
     } catch (React\Socket\ConnectionException $exception) {
         $reason = 'Address already in use';
 
-        if (strpos($exception->getMessage(), $reason) === false) {
+        $isPortSpecified = $listener[4];
+
+        if ($isPortSpecified || strpos($exception->getMessage(), $reason) === false) {
             throw $exception;
         }
 
@@ -119,8 +121,17 @@ try {
 
     $listeners = [];
     foreach ([$servers, $secures] as $type => $group) {
+        $isSecure = $type === 1;
         foreach ($group as $i => $server) {
             list($host, $port) = explode(':', $server, 2) + [1 => ''];
+
+            if ($port === '') {
+                $port = $isSecure ? '44300' : '8000';
+                $isPortSpecified = false;
+            } else {
+                $isPortSpecified = true;
+            }
+
             $ip = filter_var(gethostbyname($host), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
             $regex = '/\A(?:[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])\z/';
             if ($ip === false || !preg_match($regex, $port)) {
@@ -129,7 +140,7 @@ try {
             if (isset($listeners[$server])) {
                 throw new \RuntimeException("Duplicated entry: $server");
             }
-            $listeners[$server] = [$host, $port, $type === 1, $cert];
+            $listeners[$server] = [$host, $port, $isSecure, $cert, $isPortSpecified];
         }
     }
 
