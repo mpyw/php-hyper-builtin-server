@@ -27,33 +27,6 @@ Use **`vendor/bin/hyper-run`** as the execution path.
 
 ## Usage
 
-```ShellSession
-mpyw@localhost:~$ hyper-run -h
-
-Usage:
-    hyper-run <options>
-
-Example:
-    hyper-run -S localhost:8000 -s localhost:44300
-
-[Required]
-    -S   "<Host>:<Port>" of an HTTP server. Multiple arguments can be accepted.
-    -s   "<Host>:<Port>" of an HTTPS server. Multiple arguments can be accepted.
-
-[Optional]
-    -n   The number of PHP built-in server clusters, from 1 to 20. Default is 10.
-    -t   Path for the document root. Default is the current directory.
-    -r   Path for the router script. Default is empty.
-    -c   Path for the PEM-encoded certificate.
-         Default is "/Users/mpyw/.composer/vendor/mpyw/php-hyper-builtin-server/certificate.pem".
-
-Restrictions:
-    - The option -s is only supported on PHP 5.6.0 or later.
-    - Access logs will not be displayed on Windows.
-
-mpyw@localhost:~$
-```
-
 ### Quick start
 
 ```shell script
@@ -82,6 +55,35 @@ hyper-run -S localhost:8080 -s localhost:4000 -t src/app/www
 
 - `http://localhost:8080`
 - `https://localhost:4000`
+
+### Command Reference
+
+```ShellSession
+mpyw@localhost:~$ hyper-run -h
+
+Usage:
+    hyper-run <options>
+
+Example:
+    hyper-run -S localhost:8000 -s localhost:44300
+
+[Required]
+    -S   "<Host>:<Port>" of an HTTP server. Multiple arguments can be accepted.
+    -s   "<Host>:<Port>" of an HTTPS server. Multiple arguments can be accepted.
+
+[Optional]
+    -n   The number of PHP built-in server clusters, from 1 to 20. Default is 10.
+    -t   Path for the document root. Default is the current directory.
+    -r   Path for the router script. Default is empty.
+    -c   Path for the PEM-encoded certificate.
+         Default is "/Users/mpyw/.composer/vendor/mpyw/php-hyper-builtin-server/certificate.pem".
+
+Restrictions:
+    - The option -s is only supported on PHP 5.6.0 or later.
+    - Access logs will not be displayed on Windows.
+
+mpyw@localhost:~$
+```
 
 ## Note for Windows users
 
