@@ -72,6 +72,33 @@ if (!$servers && !$secures) {
     exit(1);
 }
 
+function startListener($master, $listener)
+{
+    $host = sprintf(
+        '%s://%s:%s',
+        $listener[2] ? 'https' : 'http', $listener[0], $listener[1]
+    );
+    fwrite(STDOUT, "Development server started: <{$host}>\n");
+
+    try {
+        call_user_func_array([$master, 'addListener'], $listener);
+    } catch (React\Socket\ConnectionException $exception) {
+        $reason = 'Address already in use';
+
+        if (strpos($exception->getMessage(), $reason) === false) {
+            throw $exception;
+        }
+
+        fwrite(STDERR, sprintf(
+            "Failed to listen on %s:%s (reason: %s)\n",
+            $listener[0], $listener[1], $reason
+        ));
+
+        $listener[1] = (int) $listener[1] + 1;
+        startListener($master, $listener);
+    }
+}
+
 try {
 
     if (!ctype_digit($number) || $number < 1 || $number > 20) {
@@ -116,13 +143,7 @@ try {
         $usedProcesses = $processes;
         $master = new mpyw\HyperBuiltinServer\Master($loop, $processes);
         foreach ($listeners as $listener) {
-            call_user_func_array([$master, 'addListener'], $listener);
-
-            $host = sprintf(
-                '%s://%s:%s',
-                $listener[2] ? 'https' : 'http', $listener[0], $listener[1]
-            );
-            fwrite(STDOUT, "Development server started: <{$host}>\n");
+            startListener($master, $listener);
         }
     })
     ->then(null, function ($e) use (&$usedProcesses) {
