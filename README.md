@@ -84,3 +84,7 @@ Unfortunately, `cmd.exe` has no option to run via shebang `#!/usr/bin/env php`, 
 @echo OFF
 "C:\xampp\php\php.exe" "%HOMEPATH%\.composer\vendor\mpyw\php-hyper-builtin-server\hyper-run" %*
 ```
+
+## License
+
+- `PHP Hyper Built-in Server` is open-sourced software licensed under the [MIT license](LICENSE) by [@mpyw](https://github.com/mpyw).
