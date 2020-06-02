@@ -30,7 +30,7 @@ Usage:
     $_SERVER[SCRIPT_NAME] <options>
 
 Example:
-    $_SERVER[SCRIPT_NAME] -S localhost:8080 -s localhost:8081
+    $_SERVER[SCRIPT_NAME] -S localhost:8000 -s localhost:44300
 
 [Required]
     -S   \"<Host>:<Port>\" of an HTTP server. Multiple arguments can be accepted.
